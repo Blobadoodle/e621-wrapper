@@ -130,7 +130,7 @@ class api:
     def __init__(self, user, key):
         #self.header = {}
         #self.header["User-Agent"] = header
-        self.header = {"User-Agent":"Api-Wrapper-Test/0.1 (by what-the-fuck)"}
+        self.header = {"User-Agent":"YOUR-CHOSEN-HEADER"}
         #self.auth = (user, key)
         self.user = user
         self.key = key
