@@ -35,3 +35,7 @@ Or if you want to search you can do `e6.search(LIST_OF_TAGS, POSTS_PER_PAGE, PAG
 `e6.getuser(USER_ID)` is used to get info about a user from their id. It returns an object with the `user` class. you can then list `user.id, user.name user.forum_post_count` etc.
 
 `e6.searchuser(USER_NAME)` works very similary to getuser except instead of taking their id it takes their username and out puts the same object.
+
+## Extra
+
+If you want all the values that can be returned from posts or user searches then justlook at line 41 to line 91 for posts and line 95 to line 117 for users
