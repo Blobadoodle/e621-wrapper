@@ -12,6 +12,8 @@ pip3 install requests
 
 Here is a quick example showing some stuff you can do with this library.
 
+Make sure you put the yiff.py file in your project directory first
+
 Where it says `YOUR-CHOSEN-HEADER` in the yiff.py file (line 133) you should replace with something descriptive as said in the e621 api something like "Api-wrapper-test/0.1 (by *your-username*)"
 
 I tried to add this as an argument in the yiff.api call but for whatever fucking reason it would not work at all.
