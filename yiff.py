@@ -115,17 +115,14 @@ class user:
         self.level_str = data["level_string"]
         self.avatar_id = data["avatar_id"]
 
-def e6get(lnk, user, key, header):
-    check_limit()
-    return requests.get(lnk, headers=header, auth=HTTPBasicAuth(user, key))
+global version
+version = "v0.2"
+
+# Actual code begins here
 
 class api:
     def __init__(self, user, key, header):
-        #self.header = {}
-        #self.header["User-Agent"] = header
-        #self.header = {"User-Agent":"YOUR-CHOSEN-HEADER"}
         self.header = {"User-Agent": header}
-        #self.auth = (user, key)
         self.user = user
         self.key = key
         self.e621 = "https://e621.net/"
