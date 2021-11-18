@@ -10,11 +10,10 @@ RATE_LIMIT = 1
 @sleep_and_retry
 @limits(calls=CALLS, period=RATE_LIMIT)
 def check_limit():
-    '''Empty function just to check for calls to API'''
+    # Empty function just to check for calls to API
     return
 
-e621 = "https://e621.net/"
-
+global codes
 codes = {
     "200":"OK",
     "204":"No Content",
@@ -116,67 +115,62 @@ class user:
         self.level_str = data["level_string"]
         self.avatar_id = data["avatar_id"]
 
-def httpCode(code):
-    if code != 200:
-        raise ConnectionRefusedError(str(code) + " " + codes[str(code)])
-    else:
-        return
-
 def e6get(lnk, user, key, header):
     check_limit()
     return requests.get(lnk, headers=header, auth=HTTPBasicAuth(user, key))
 
 class api:
-    def __init__(self, user, key):
+    def __init__(self, user, key, header):
         #self.header = {}
         #self.header["User-Agent"] = header
-        self.header = {"User-Agent":"YOUR-CHOSEN-HEADER"}
+        #self.header = {"User-Agent":"YOUR-CHOSEN-HEADER"}
+        self.header = {"User-Agent": header}
         #self.auth = (user, key)
         self.user = user
         self.key = key
+        self.e621 = "https://e621.net/"
+        self.e926 = "https://e926.net/"
+
+    def e6get(self, lnk):
+        check_limit()
+        r = requests.get(self.e621 + lnk, headers=self.header, auth=HTTPBasicAuth(self.user, self.key))
+        json1 = json.loads(r.text)
+        self.handleCode(r.status_code)
+        return json1
+
+    def handleCode(self, code):
+        if code != 200:
+            raise ConnectionRefusedError(str(code) + " " + codes[str(code)])
+        else:
+            return
 
     def getpost(self ,pid):
         pid = str(pid)
-        lnk = e621 + "posts/" + pid + ".json"
-        #r = requests.get(lnk, headers=self.header, auth=HTTPBasicAuth(self.user, self.key))
-        r = e6get(lnk, self.user, self.key, self.header)
-        httpCode(r.status_code)
-        r = r.text
-        data = json.loads(r)
+        lnk = "posts/" + pid + ".json"
+        data = self.e6get(lnk)
         return sub(data["post"])
 
     def search(self, tags, limit, page):
-        lnk = e621 + "posts.json?limit=" + str(limit) + "&page=" + str(page) + "&tags="
+        lnk = "posts.json?limit=" + str(limit) + "&page=" + str(page) + "&tags="
         for id, tag in enumerate(tags):
             lnk += tag
             if id != (len(tags) - 1):
                 lnk += "+"
-        #r = requests.get(lnk, headers=self.header, auth=HTTPBasicAuth(self.user, self.key))
-        r = e6get(lnk, self.user, self.key, self.header)
-        httpCode(r.status_code)
-        r = r.text
-        data = json.loads(r) 
+        data = self.e6get(lnk)
         posts = []
         for post in data["posts"]:
             posts.append(sub(post))
         return posts
 
     def getuser(self, uid):
-        lnk = e621 + "users/" + str(uid) + ".json"
-        #r = requests.get(lnk, headers=self.header, auth=HTTPBasicAuth(self.user, self.key))
-        r = e6get(lnk, self.user, self.key, self.header)
-        httpCode(r.status_code)
-        r = r.text
-        data = json.loads(r)
+        lnk = "users/" + str(uid) + ".json"
+        data = self.e6get(lnk)
         return user(data)
 
     def searchuser(self, name):
-        lnk = e621 + "users.json?search[name_matches]=" + name
-        r = e6get(lnk, self.user, self.key, self.header)
-        httpCode(r.status_code)
-        r = r.text
-        data = json.loads(r)
+        lnk = "users.json?search[name_matches]=" + name
+        data = self.e6get(lnk)
         users = []
-        for users2 in data:
-            users.append(self.getuser(users2["id"]))
+        for user in data:
+            users.append(self.getuser(user["id"]))
         return users
