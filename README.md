@@ -8,8 +8,9 @@ pip3 install ratelimit
 pip3 install requests
 ```
 # Install:
-
+```bash
 pip3 install yiffpy
+```
 
 # Tutorial
 
