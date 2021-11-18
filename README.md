@@ -7,17 +7,19 @@ A python3 "library" for using the e621 api.
 pip3 install ratelimit
 pip3 install requests
 ```
+# Install:
+
+pip3 install yiffpy
 
 # Tutorial
 
 Here is a quick example showing some stuff you can do with this library.
 
-Make sure you put the yiff.py file in your project directory first
 
 Where it says `YOUR-USER-AGENT` you should replace with something descriptive as said in the e621 api something like "Api-wrapper-test/0.1 (by *your-username*)". The other 2 arguments describe themselves.
 
 ```python3
-import yiff
+from yiff import yiff
 
 e6 = yiff.api("YOUR-E6-USERNAME", "YOUR-E6-API-KEY", "YOUR-USER-AGENT")
 ```
